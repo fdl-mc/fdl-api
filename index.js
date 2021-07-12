@@ -22,7 +22,7 @@ app.get('/pay', (req, res) => {
     // CALBACK HEEEEEEEELLLLL
     // LESS GOOOOOOOOOOOOOOOO
     db.collection('users')
-        .where('uid', '==', payer)
+        .doc(payer)
         .get()
         .then((query) => {
             payerObj = query.docs[0];
