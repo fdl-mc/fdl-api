@@ -1,6 +1,7 @@
 from firebase_admin import credentials
 from flask import Flask, request
 from firebase_admin import initialize_app, firestore, credentials
+from flask_cors import cross_origin
 
 fb = initialize_app(
     credential=credentials.Certificate('./admin.json'))
@@ -8,6 +9,7 @@ db = firestore.client(app=fb)
 app = Flask(__name__)
 
 
+@cross_origin()
 @app.route("/pay")
 def pay():
     try:
