@@ -14,7 +14,6 @@ let db = firebase.firestore();
 app.get('/pay', (req, res) => {
     const payer = req.query.payer;
     const payee = req.query.payee;
-    parseInt(req.query.amount);
     const amount = req.query.amount;
 
     let payerObj;
@@ -50,10 +49,13 @@ app.get('/pay', (req, res) => {
                                     })
                                     .then(() => {
                                         res.send('ok');
-                                    });
-                            });
+                                    })
+                                    .catch((e) => console.error);
+                            })
+                            .catch((e) => console.error);
                     }
-                });
+                })
+                .catch((e) => console.error);
         });
 });
 
