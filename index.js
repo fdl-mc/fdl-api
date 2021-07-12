@@ -50,12 +50,12 @@ app.get('/pay', (req, res) => {
                                     .then(() => {
                                         res.send('ok');
                                     })
-                                    .catch((e) => console.error);
+                                    .catch((e) => console.log(e));
                             })
-                            .catch((e) => console.error);
+                            .catch((e) => console.log(e));
                     }
                 })
-                .catch((e) => console.error);
+                .catch((e) => console.log(e));
         });
 });
 
