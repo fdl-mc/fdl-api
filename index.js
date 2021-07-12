@@ -21,8 +21,9 @@ app.get('/pay', (req, res) => {
 
     // CALBACK HEEEEEEEELLLLL
     // LESS GOOOOOOOOOOOOOOOO
+    // эвэйты для лохов кста
     db.collection('users')
-        .where(firebase.firestore.FieldPath.documentId, '==', payer)
+        .where(firebase.firestore.FieldPath.documentId(), '==', payer)
         .get()
         .then((query) => {
             payerObj = query.docs[0];
