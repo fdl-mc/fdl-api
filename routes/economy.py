@@ -9,6 +9,10 @@ def pay():
     try:
         args = request.args.to_dict()
 
+        for val in ['payer', 'payee', 'amount']:
+            if val not in args:
+                return {'message': f'Необходим параметр {val}'}, 400
+
         payer = args['payer']
         payee = args['payee']
         amount = int(args['amount'])
