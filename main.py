@@ -8,6 +8,7 @@ fb = initialize_app(credential=credentials.Certificate('./admin.json'))
 db = firestore.client(app=fb)
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 CORS(app)
 
 app.register_blueprint(stats_bp, url_prefix='/stats')
