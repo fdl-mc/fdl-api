@@ -4,13 +4,16 @@ from firebase_admin import initialize_app, firestore, credentials
 from flask_cors import CORS
 from routes.stats import stats_bp
 
+# Initialize Firebase Admin and Firestore
 fb = initialize_app(credential=credentials.Certificate('./admin.json'))
 db = firestore.client(app=fb)
 
+# Initialize and configure server, setup CORS
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 CORS(app)
 
+# Register routes
 app.register_blueprint(stats_bp, url_prefix='/stats')
 
 
