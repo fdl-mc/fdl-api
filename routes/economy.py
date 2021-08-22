@@ -40,5 +40,5 @@ def pay():
 
     except Exception as e:
         return {
-            'message': 'Внутренняя ошибка сервера: ' + str(e)
+            'message': f'Внутренняя ошибка сервера: {str(e)}'
         }, 500
