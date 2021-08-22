@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from ..shared.instances import db
+from shared.instances import db
 
 economy_bp = Blueprint('economy', __name__)
 
