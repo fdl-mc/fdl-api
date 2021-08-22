@@ -2,12 +2,15 @@ from firebase_admin import credentials
 from flask import Flask, request
 from firebase_admin import initialize_app, firestore, credentials
 from flask_cors import CORS
+from routes.stats import stats_bp
 
-fb = initialize_app(
-    credential=credentials.Certificate('./admin.json'))
+fb = initialize_app(credential=credentials.Certificate('./admin.json'))
 db = firestore.client(app=fb)
+
 app = Flask(__name__)
 CORS(app)
+
+app.register_blueprint(stats_bp, url_prefix='/stats')
 
 
 @app.route("/pay")
