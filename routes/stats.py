@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from mcstatus import MinecraftServer
 
 stats_bp = Blueprint('stats', __name__)
