@@ -14,7 +14,7 @@ CORS(app)
 app.register_blueprint(stats_bp, url_prefix='/stats')
 
 
-@app.route("/pay")
+@app.route('/pay')
 def pay():
     try:
         args = request.args.to_dict()
@@ -41,6 +41,6 @@ def pay():
         return str(e)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from waitress import serve
     serve(app, port=3000)
