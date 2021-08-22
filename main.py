@@ -2,15 +2,22 @@ from firebase_admin import credentials
 from flask import Flask, request
 from firebase_admin import initialize_app, firestore, credentials
 from flask_cors import CORS
+from routes.stats import stats_bp
 
-fb = initialize_app(
-    credential=credentials.Certificate('./admin.json'))
+# Initialize Firebase Admin and Firestore
+fb = initialize_app(credential=credentials.Certificate('./admin.json'))
 db = firestore.client(app=fb)
+
+# Initialize and configure server, setup CORS
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 CORS(app)
 
+# Register routes
+app.register_blueprint(stats_bp, url_prefix='/stats')
 
-@app.route("/pay")
+
+@app.route('/pay')
 def pay():
     try:
         args = request.args.to_dict()
@@ -37,6 +44,6 @@ def pay():
         return str(e)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from waitress import serve
     serve(app, port=3000)
