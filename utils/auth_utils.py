@@ -12,4 +12,4 @@ def get_user_by_token(token: str):
     if len(query) == 0:
         return None
 
-    return query[0].to_dict()
+    return query[0]
