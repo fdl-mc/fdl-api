@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from shared.instances import db
-from utils.auth_utils import get_user_by_token
+from utils.auth_utils import get_user_by_token, get_token_from_request
 
 economy_bp = Blueprint('economy', __name__)
 
@@ -9,16 +9,15 @@ economy_bp = Blueprint('economy', __name__)
 def pay():
     try:
         args = request.args.to_dict()
-        headers = request.headers
 
-        if not headers.has_key('Authorization'):
+        token = get_token_from_request(request)
+        if token is None:
             return {'message': 'Пустой токен.'}, 401
 
         for val in ['payee', 'amount']:
             if val not in args:
                 return {'message': f'Необходим параметр {val}.'}, 400
 
-        token = headers['Authorization']
         payee = args['payee']
         amount = int(args['amount'])
 
