@@ -41,7 +41,7 @@ def pay():
         payer_doc.reference.update({'balance': payer_balance - amount})
         payee_doc.reference.update({'balance': payee_balance + amount})
 
-        return {'message': f'Успешно переведено ${amount} ИБ пользователю ${payee}.'}, 200
+        return {'message': f'Успешно переведено {amount} ИБ пользователю {payee}.'}, 200
 
     except Exception as e:
         return {'message': f'Внутренняя ошибка сервера: {str(e)}'}, 500
