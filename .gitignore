@@ -1,7 +1,9 @@
-node_modules/
-package-lock.json
+# Files and directories created by pub.
+.dart_tool/
+.packages
 
-__pycache__/
+# Conventional directory for build output.
+build/
 
-# данные от админки бд =)
+client.json
 admin.json
