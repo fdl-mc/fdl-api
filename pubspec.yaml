@@ -8,5 +8,6 @@ environment:
 dev_dependencies:
     pedantic: ^1.10.0
 dependencies: 
+    dart_minecraft: ^0.4.0
     shelf: ^1.2.0
     shelf_router: ^1.1.1
