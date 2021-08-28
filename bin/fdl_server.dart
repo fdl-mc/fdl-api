@@ -1,3 +1,4 @@
+import 'package:fdl_server/src/middlewares/logging.dart';
 import 'package:fdl_server/src/routes/economy.dart';
 import 'package:fdl_server/src/routes/stats.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -8,10 +9,10 @@ void main(List<String> arguments) {
   final app = Router();
 
   app
-    ..mount('/economy', EconomyController().router)
-    ..mount('/stats', StatsController().router);
+    ..mount('/economy/', EconomyController().router)
+    ..mount('/stats/', StatsController().router);
 
-  final handler = Pipeline().addHandler(app);
+  final handler = Pipeline().addMiddleware(loggingMiddleware()).addHandler(app);
 
   serve(handler, '0.0.0.0', 3000);
 }
