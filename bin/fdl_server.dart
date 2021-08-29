@@ -8,9 +8,12 @@ import 'package:shelf/shelf_io.dart' show serve;
 void main(List<String> arguments) {
   final app = Router();
 
-  app
-    ..mount('/economy/', EconomyController().router)
-    ..mount('/stats/', StatsController().router);
+  app.mount(
+    '/v1/',
+    Router()
+      ..mount('/economy/', EconomyController().router)
+      ..mount('/stats/', StatsController().router),
+  );
 
   final handler = Pipeline().addMiddleware(loggingMiddleware()).addHandler(app);
 
