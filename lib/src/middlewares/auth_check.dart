@@ -1,35 +1,41 @@
+import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:fdl_server/src/shared/instances.dart';
 import 'package:shelf/shelf.dart';
 
 /// Verifies auth id token
-Middleware authCheckMiddleware() {
-  return (innerHandler) {
-    return (request) async {
-      final token = request.headers['Authorization'];
+class AuthCheckMiddleware extends IMiddleware {
+  final auth = firebase.auth();
 
-      if (token == null || token.trim() == '') {
-        return Response(
-          401,
-          body: {
-            'status': 401,
-            'message': 'Пустой токен.',
-          }.toString(),
-        );
-      }
+  @override
+  Middleware middleware() {
+    return (innerHandler) {
+      return (request) async {
+        final token = request.headers['Authorization'];
 
-      try {
-        await auth.verifyIdToken(token, true);
-      } catch (e) {
-        return Response(
-          401,
-          body: {
-            'status': 401,
-            'message': 'Неудачная аутентификация.',
-          }.toString(),
-        );
-      }
+        if (token == null || token.trim() == '') {
+          return Response(
+            401,
+            body: {
+              'status': 401,
+              'message': 'Пустой токен.',
+            }.toString(),
+          );
+        }
 
-      return innerHandler(request);
+        try {
+          await auth.verifyIdToken(token, true);
+        } catch (e) {
+          return Response(
+            401,
+            body: {
+              'status': 401,
+              'message': 'Неудачная аутентификация.',
+            }.toString(),
+          );
+        }
+
+        return innerHandler(request);
+      };
     };
-  };
+  }
 }
