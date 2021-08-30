@@ -1,6 +1,7 @@
 import 'package:fdl_server/src/middlewares/logging.dart';
 import 'package:fdl_server/src/routes/economy.dart';
 import 'package:fdl_server/src/routes/stats.dart';
+import 'package:fdl_server/src/shared/instances.dart';
 import 'package:fdl_server/src/utils/config.dart';
 import 'package:fdl_server/src/utils/initialize_services.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -8,11 +9,10 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' show serve;
 
 Future<void> main() async {
-  final app = Router();
   final config = Config.fromEnviroment();
+  await initializeServices(config);
 
-  await initializeServices();
-
+  final app = Router();
   app.mount(
     '/v1/',
     Router()
