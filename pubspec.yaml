@@ -12,3 +12,4 @@ dependencies:
     shelf: ^1.2.0
     shelf_router: ^1.1.1
     firebase_admin: ^0.2.0-dev.1
+    mongo_dart: ^0.7.1
