@@ -3,7 +3,7 @@ import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-class StatsController extends Controller {
+class StatsController extends IController {
   @override
   Router get router {
     final router = Router();
