@@ -3,6 +3,7 @@ import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+/// Provide stats routes.
 class StatsController extends IController {
   @override
   Router get router {
@@ -14,6 +15,7 @@ class StatsController extends IController {
     return router;
   }
 
+  /// Fetch main server stats.
   Future<Response> _mainStats(Request request) async {
     final server = await ping(
       'play.fdl-mc.ru',
@@ -36,6 +38,7 @@ class StatsController extends IController {
     }.toString());
   }
 
+  /// Fetch creative server stats.
   Future<Response> _creativeStats(Request request) async {
     final server = await ping(
       'creative.fdl-mc.ru',

@@ -2,7 +2,7 @@ import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:fdl_server/src/shared/instances.dart';
 import 'package:shelf/shelf.dart';
 
-/// Verifies auth id token
+/// Verify auth id token.
 class AuthCheckMiddleware extends IMiddleware {
   final auth = firebase.auth();
 

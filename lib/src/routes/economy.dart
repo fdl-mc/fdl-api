@@ -7,6 +7,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+/// Provide economy routes
 class EconomyController extends IController {
   @override
   Router get router {
@@ -27,20 +28,21 @@ class EconomyController extends IController {
     return router;
   }
 
+  /// Process payment.
   Future<Response> pay(Request request) async {
     final args = request.context['body'] as Map<String, String>;
 
-    // fetch args
+    // Fetch args.
     final payeeName = args['payee']!;
     final amount = int.tryParse(args['amount']!);
     final comment = args['comment'];
     final payerId = (await getAuthDetails(request))['user_id']! as String;
 
-    // get database collections
+    // Get required database collections.
     final passports = database.collection('passports');
     final economy = database.collection('economy');
 
-    // find payee passport by nickname
+    // Find payee passport by nickname.
     final payeePassport = await passports.findOne(
       where.eq('nickname', payeeName),
     );
@@ -52,11 +54,11 @@ class EconomyController extends IController {
     }
     final payeeId = payeePassport['_id'];
 
-    // find payer and payee economy states by id
+    // Find payer and payee economy states by its ids.
     final payerEconomy = (await economy.findOne(where.eq('_id', payerId)))!;
     final payeeEconomy = (await economy.findOne(where.eq('_id', payeeId)))!;
 
-    // check for payer funds
+    // Check for payer funds.
     if (payerEconomy['balance'] < amount) {
       return Response.forbidden({
         'errorCode': 403,
@@ -64,13 +66,13 @@ class EconomyController extends IController {
       }.toString());
     }
 
-    // update payee balance
+    // Update payee balance.
     await economy.updateOne(
       where.eq('_id', payeeId),
       modify.set('balance', payeeEconomy['balance'] + amount),
     );
 
-    // update payer balance
+    // Update payer balance.
     await economy.updateOne(
       where.eq('_id', payerId),
       modify.set('balance', payerEconomy['balance'] - amount),

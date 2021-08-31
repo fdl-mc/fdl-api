@@ -1,7 +1,7 @@
 import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:shelf/shelf.dart';
 
-/// Adds CORS headers
+/// Add CORS headers.
 class CorsMiddleware extends IMiddleware {
   static const _headers = {
     'Access-Control-Allow-Origin': '*',

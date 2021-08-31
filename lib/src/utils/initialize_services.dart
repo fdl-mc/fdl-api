@@ -4,6 +4,7 @@ import 'package:firebase_admin/firebase_admin.dart';
 import 'package:firebase_admin/src/auth/credential.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+/// Initialize all instances and services from [config].
 Future<void> initializeServices(Config config) async {
   firebase = FirebaseAdmin.instance.initializeApp(
     AppOptions(

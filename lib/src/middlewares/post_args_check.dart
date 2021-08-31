@@ -1,7 +1,7 @@
 import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:shelf/shelf.dart';
 
-/// Checks POST args
+/// Check for required POST parameters.
 class PostArgsMiddleware extends IMiddleware {
   final List<String> requiredArgs;
 

@@ -2,7 +2,7 @@ import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:fdl_server/src/utils/get_ip.dart';
 import 'package:shelf/shelf.dart';
 
-/// Logs all incoming request
+/// Log all incoming requests.
 class LoggingMiddleware extends IMiddleware {
   @override
   Middleware middleware() {
