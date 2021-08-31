@@ -6,7 +6,9 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 Future<void> initializeServices(Config config) async {
   firebase = FirebaseAdmin.instance.initializeApp(
-    AppOptions(credential: ServiceAccountCredential('admin.json')),
+    AppOptions(
+      credential: ServiceAccountCredential(config.firebaseAdminCredentials),
+    ),
   );
 
   database = await Db.create(config.mongodbUrl);
