@@ -1,4 +1,5 @@
 import 'package:fdl_server/src/middlewares/body_parser.dart';
+import 'package:fdl_server/src/middlewares/cors.dart';
 import 'package:fdl_server/src/middlewares/logging.dart';
 import 'package:fdl_server/src/routes/economy.dart';
 import 'package:fdl_server/src/routes/stats.dart';
@@ -23,6 +24,7 @@ Future<void> main() async {
   );
 
   final handler = Pipeline()
+      .addMiddleware(CorsMiddleware().middleware())
       .addMiddleware(LoggingMiddleware().middleware())
       .addMiddleware(BodyParserMiddleware().middleware())
       .addHandler(app);
