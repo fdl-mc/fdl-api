@@ -1,5 +1,5 @@
 name: fdl_server
-description: A simple command-line application.
+description: The REST and WS api for FreedomLand ecosystem.
 version: 1.0.0
 
 environment:
