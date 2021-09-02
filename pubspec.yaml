@@ -7,7 +7,6 @@ environment:
 
 dev_dependencies:
     lints: ^1.0.1
-    pedantic: ^1.10.0
 dependencies:
     dart_minecraft: ^0.4.0
     shelf: ^1.2.0
