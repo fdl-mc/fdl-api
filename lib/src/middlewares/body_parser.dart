@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:shelf/shelf.dart';
 
@@ -15,7 +17,6 @@ class BodyParserMiddleware extends IMiddleware {
 
   /// Parse [request]'s body form into [Map]
   Future<Map<String, String>> _parseBody(Request request) async {
-    final query = Uri.splitQueryString(await request.readAsString());
-    return query;
+    return jsonDecode(await request.readAsString());
   }
 }
