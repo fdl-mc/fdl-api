@@ -81,18 +81,19 @@ class EconomyController extends IController {
     );
 
     // Add transaction to history.
-    await paymentHistory.insertOne(
-      TransactionBuilder(
-        payer: payerId,
-        payee: payeeId,
-        amount: amount,
-        comment: comment,
-        at: Timestamp(),
-      ).build(),
-    );
+    final transaction = TransactionBuilder(
+      payer: payerId,
+      payee: payeeId,
+      amount: amount,
+      comment: comment,
+      at: DateTime.now(),
+    ).build();
 
-    return Response.ok({
-      'message': 'Успшено переведено $amount ИБ пользователю $payeeName.',
-    }.toString());
+    await paymentHistory.insert(transaction);
+
+    // i dont know why it puts values :v
+    transaction.remove('_id');
+
+    return Response.ok(transaction.toString());
   }
 }

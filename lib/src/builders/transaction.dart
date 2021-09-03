@@ -1,15 +1,19 @@
 import 'package:fdl_server/src/interfaces/builder.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 class TransactionBuilder implements IBuilder<Map<String, dynamic>> {
   String? payer;
   String? payee;
   int? amount;
   String? comment;
-  Timestamp? at;
+  DateTime? at;
 
-  TransactionBuilder(
-      {this.payer, this.payee, this.amount, this.comment, this.at});
+  TransactionBuilder({
+    this.payer,
+    this.payee,
+    this.amount,
+    this.comment,
+    this.at,
+  });
 
   @override
   Map<String, dynamic> build() {
@@ -17,7 +21,7 @@ class TransactionBuilder implements IBuilder<Map<String, dynamic>> {
       'payer': payer!,
       'payee': payee!,
       'amount': amount!,
-      if (comment != null) 'comment': comment,
+      'comment': comment,
       'at': at,
     };
   }
