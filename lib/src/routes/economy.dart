@@ -1,3 +1,4 @@
+import 'package:fdl_server/src/builders/transaction.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:fdl_server/src/middlewares/auth_check.dart';
 import 'package:fdl_server/src/middlewares/post_args_check.dart';
@@ -41,6 +42,7 @@ class EconomyController extends IController {
     // Get required database collections.
     final passports = database.collection('passports');
     final economy = database.collection('economy');
+    final paymentHistory = database.collection('payment_history');
 
     // Find payee passport by nickname.
     final payeePassport = await passports.findOne(
@@ -76,6 +78,17 @@ class EconomyController extends IController {
     await economy.updateOne(
       where.eq('_id', payerId),
       modify.set('balance', payerEconomy['balance'] - amount),
+    );
+
+    // Add transaction to history.
+    await paymentHistory.insertOne(
+      TransactionBuilder(
+        payer: payerId,
+        payee: payeeId,
+        amount: amount,
+        comment: comment,
+        at: Timestamp(),
+      ).build(),
     );
 
     return Response.ok({
