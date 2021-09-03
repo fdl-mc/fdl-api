@@ -16,7 +16,7 @@ class BodyParserMiddleware extends IMiddleware {
   }
 
   /// Parse [request]'s body form into [Map]
-  Future<Map<String, String>> _parseBody(Request request) async {
+  Future<Map<String, dynamic>> _parseBody(Request request) async {
     return jsonDecode(await request.readAsString());
   }
 }

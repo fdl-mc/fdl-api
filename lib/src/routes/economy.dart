@@ -31,12 +31,12 @@ class EconomyController extends IController {
 
   /// Process payment.
   Future<Response> pay(Request request) async {
-    final args = request.context['body'] as Map<String, String>;
+    final args = request.context['body'] as Map<String, dynamic>;
 
     // Fetch args.
-    final payeeName = args['payee']!;
-    final amount = int.tryParse(args['amount']!);
-    final comment = args['comment'];
+    final payeeName = args['payee']! as String;
+    final amount = args['amount'] as int;
+    final comment = args['comment'] as String?;
     final payerId = (await getAuthDetails(request))['user_id']! as String;
 
     // Get required database collections.
