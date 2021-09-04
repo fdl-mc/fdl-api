@@ -11,7 +11,7 @@ class PostArgsMiddleware extends IMiddleware {
   Middleware middleware() {
     return (innerHandler) {
       return (request) async {
-        final args = request.context['body'] as Map<String, String>;
+        final args = request.context['body'] as Map<String, dynamic>;
 
         for (var i = 0; i < requiredArgs.length; i++) {
           if (!args.containsKey(requiredArgs[i])) {

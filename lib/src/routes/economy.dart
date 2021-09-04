@@ -1,3 +1,4 @@
+import 'package:fdl_server/src/builders/transaction.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:fdl_server/src/middlewares/auth_check.dart';
 import 'package:fdl_server/src/middlewares/post_args_check.dart';
@@ -30,17 +31,18 @@ class EconomyController extends IController {
 
   /// Process payment.
   Future<Response> pay(Request request) async {
-    final args = request.context['body'] as Map<String, String>;
+    final args = request.context['body'] as Map<String, dynamic>;
 
     // Fetch args.
-    final payeeName = args['payee']!;
-    final amount = int.tryParse(args['amount']!);
-    final comment = args['comment'];
+    final payeeName = args['payee']! as String;
+    final amount = args['amount'] as int;
+    final comment = args['comment'] as String?;
     final payerId = (await getAuthDetails(request))['user_id']! as String;
 
     // Get required database collections.
     final passports = database.collection('passports');
     final economy = database.collection('economy');
+    final paymentHistory = database.collection('payment_history');
 
     // Find payee passport by nickname.
     final payeePassport = await passports.findOne(
@@ -78,8 +80,20 @@ class EconomyController extends IController {
       modify.set('balance', payerEconomy['balance'] - amount),
     );
 
-    return Response.ok({
-      'message': 'Успшено переведено $amount ИБ пользователю $payeeName.',
-    }.toString());
+    // Add transaction to history.
+    final transaction = TransactionBuilder(
+      payer: payerId,
+      payee: payeeId,
+      amount: amount,
+      comment: comment,
+      at: DateTime.now(),
+    ).build();
+
+    await paymentHistory.insert(transaction);
+
+    // i dont know why it puts values :v
+    transaction.remove('_id');
+
+    return Response.ok(transaction.toString());
   }
 }
