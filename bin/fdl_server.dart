@@ -2,6 +2,7 @@ import 'package:fdl_server/src/middlewares/body_parser.dart';
 import 'package:fdl_server/src/middlewares/cors.dart';
 import 'package:fdl_server/src/middlewares/logging.dart';
 import 'package:fdl_server/src/routes/economy.dart';
+import 'package:fdl_server/src/routes/passport.dart';
 import 'package:fdl_server/src/routes/stats.dart';
 import 'package:fdl_server/src/utils/config.dart';
 import 'package:fdl_server/src/utils/initialize_services.dart';
@@ -20,7 +21,8 @@ Future<void> main() async {
     '/v1/',
     Router()
       ..mount('/economy/', EconomyController().router)
-      ..mount('/stats/', StatsController().router),
+      ..mount('/stats/', StatsController().router)
+      ..mount('/passport/', PassportController().router),
   );
 
   final handler = Pipeline()
