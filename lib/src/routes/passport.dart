@@ -9,14 +9,13 @@ class PassportController extends IController {
   Router get router {
     final router = Router();
 
-    // TODO: rename to more consistent and use GET query instead of path
-    router.get('/user/<user>', getUser);
+    router.get('/get', getUser);
 
     return router;
   }
 
   Future<Response> getUser(Request request) async {
-    final query = request.params['user'];
+    final query = request.url.queryParameters['query'];
     final passports = database.collection('passports');
 
     final user = await passports.findOne(
@@ -27,6 +26,7 @@ class PassportController extends IController {
     );
 
     if (user == null) {
+      // TODO: replace map with builder
       return Response.notFound({
         'errorCode': 404,
         'message': 'Пользователь не найден.',
