@@ -42,7 +42,7 @@ class PassportController extends IController {
 
   Future<Response> findUsers(Request request) async {
     final query = request.url.queryParameters['query']!;
-    final passports = database.collection("passports");
+    final passports = database.collection('passports');
 
     final users = await passports
         .find(where.match('nickname', query, caseInsensitive: true))
