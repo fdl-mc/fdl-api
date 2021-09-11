@@ -45,7 +45,7 @@ class PassportController extends IController {
     final passports = database.collection("passports");
 
     final users = await passports
-        .find(where.match('_id', query, caseInsensitive: true))
+        .find(where.match('nickname', query, caseInsensitive: true))
         .toList();
 
     final cleanUsers = users.map((user) {
