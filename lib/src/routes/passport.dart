@@ -1,5 +1,5 @@
-import 'package:fdl_server/src/builders/error.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
+import 'package:fdl_server/src/shared/builders.dart';
 import 'package:fdl_server/src/shared/instances.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
@@ -29,11 +29,7 @@ class PassportController extends IController {
 
     if (user == null) {
       return Response.notFound(
-        ErrorMessageBuilder(
-          errorCode: 404,
-          errorStatus: 'USER_NOT_FOUND',
-          errorMessage: 'Пользователь не найден.',
-        ).build(),
+        Builders.userNotFoundError.build(),
       );
     }
 

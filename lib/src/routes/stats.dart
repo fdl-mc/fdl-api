@@ -1,6 +1,6 @@
 import 'package:dart_minecraft/dart_minecraft.dart';
-import 'package:fdl_server/src/builders/server_stats.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
+import 'package:fdl_server/src/shared/builders.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
@@ -18,25 +18,20 @@ class StatsController extends IController {
 
   /// Fetch main server stats.
   Future<Response> _mainStats(Request request) async {
+    // TODO: use pingUri() and store ips in the env vars, parse from config
     final server = await ping(
       'play.fdl-mc.ru',
       port: 25565,
       timeout: Duration(seconds: 5),
     );
-    final response = server!.response!;
 
-    return Response.ok(ServerStatsBuilder(
-      ip: 'play.fdl-mc.ru',
-      port: 25565,
-      description: response.description.description,
-      version: response.version.name.split(' ').last,
-      latency: server.ping,
-      players: PlayersStatsBuilder(
-        online: response.players.online,
-        max: response.players.max,
-        names: response.players.sample.map((e) => e.name).toList(),
-      ),
-    ).build());
+    return Response.ok(
+      Builders.getServerStatsFromResponse(
+        server!,
+        ip: 'play.fdl-mc.ru',
+        port: 25565,
+      ).build(),
+    );
   }
 
   /// Fetch creative server stats.
@@ -46,19 +41,13 @@ class StatsController extends IController {
       port: 25565,
       timeout: Duration(seconds: 5),
     );
-    final response = server!.response!;
 
-    return Response.ok(ServerStatsBuilder(
-      ip: 'creative.fdl-mc.ru',
-      port: 25565,
-      description: response.description.description,
-      version: response.version.name.split(' ').last,
-      latency: server.ping,
-      players: PlayersStatsBuilder(
-        online: response.players.online,
-        max: response.players.max,
-        names: response.players.sample.map((e) => e.name).toList(),
-      ),
-    ).build());
+    return Response.ok(
+      Builders.getServerStatsFromResponse(
+        server!,
+        ip: 'creative.fdl-mc.ru',
+        port: 25565,
+      ).build(),
+    );
   }
 }

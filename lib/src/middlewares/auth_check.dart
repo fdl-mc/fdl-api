@@ -1,5 +1,5 @@
-import 'package:fdl_server/src/builders/error.dart';
 import 'package:fdl_server/src/interfaces/middleware.dart';
+import 'package:fdl_server/src/shared/builders.dart';
 import 'package:fdl_server/src/shared/instances.dart';
 import 'package:shelf/shelf.dart';
 
@@ -14,23 +14,13 @@ class AuthCheckMiddleware extends IMiddleware {
         final token = request.headers['Authorization'];
 
         if (token == null || token.trim() == '') {
-          return Response(401,
-              body: ErrorMessageBuilder(
-                errorCode: 401,
-                errorStatus: 'NO_TOKEN_PROVIDED',
-                errorMessage: 'Пустой токен.',
-              ).build());
+          return Response(401, body: Builders.noTokenProvidedError.build());
         }
 
         try {
           await auth.verifyIdToken(token, true);
         } catch (e) {
-          return Response(401,
-              body: ErrorMessageBuilder(
-                errorCode: 401,
-                errorStatus: 'UNAUTHORIZED',
-                errorMessage: 'Неудачная аутентификация.',
-              ).build());
+          return Response(401, body: Builders.unauthorizedError.build());
         }
 
         return innerHandler(request);
