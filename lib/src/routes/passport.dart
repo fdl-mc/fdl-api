@@ -1,3 +1,4 @@
+import 'package:fdl_server/src/builders/error.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:fdl_server/src/shared/instances.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -27,11 +28,13 @@ class PassportController extends IController {
     );
 
     if (user == null) {
-      // TODO: replace map with builder
-      return Response.notFound({
-        'errorCode': 404,
-        'message': 'Пользователь не найден.',
-      }.toString());
+      return Response.notFound(
+        ErrorMessageBuilder(
+          errorCode: 404,
+          errorStatus: 'USER_NOT_FOUND',
+          errorMessage: 'Пользователь не найден.',
+        ).build(),
+      );
     }
 
     user['id'] = user['_id'];

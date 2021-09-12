@@ -1,3 +1,4 @@
+import 'package:fdl_server/src/builders/error.dart';
 import 'package:fdl_server/src/interfaces/middleware.dart';
 import 'package:shelf/shelf.dart';
 
@@ -17,10 +18,11 @@ class PostArgsMiddleware extends IMiddleware {
           if (!args.containsKey(requiredArgs[i])) {
             return Response(
               400,
-              body: {
-                'errorCode': 400,
-                'errorMsg': 'Необходим аргумент ${requiredArgs[i]}',
-              }.toString(),
+              body: ErrorMessageBuilder(
+                errorCode: 400,
+                errorStatus: 'NOT_ENOUGH_ARGS',
+                errorMessage: 'Необходим аргумент ${requiredArgs[i]}',
+              ).build(),
             );
           }
         }
