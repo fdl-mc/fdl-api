@@ -14,19 +14,38 @@ class EconomyController extends IController {
   Router get router {
     final router = Router();
 
-    router.post(
-      '/pay',
-      Pipeline()
-          .addMiddleware(
-            AuthCheckMiddleware().middleware(),
-          )
-          .addMiddleware(
-            PostArgsMiddleware(requiredArgs: ['payee', 'amount']).middleware(),
-          )
-          .addHandler(pay),
-    );
+    router
+      // TODO: rework to /<id>/pay (????)
+      ..post(
+        '/pay',
+        Pipeline()
+            .addMiddleware(AuthCheckMiddleware().middleware())
+            .addMiddleware(PostArgsMiddleware(requiredArgs: ['payee', 'amount'])
+                .middleware())
+            .addHandler(pay),
+      )
+      ..get('/<id>/stats', getUserStats);
 
     return router;
+  }
+
+  /// Get user statistics, e.g. balance.
+  Future<Response> getUserStats(Request request) async {
+    final id = request.params['id'];
+    final economy = database.collection('economy');
+    final data = await economy.findOne(where.eq('_id', id));
+
+    if (data == null) {
+      return Response.notFound({
+        'errorCode': 404,
+        'message': 'Пользователь не найден.',
+      }.toString());
+    }
+
+    data['id'] = data['_id'];
+    data.remove('_id');
+
+    return Response.ok(data.toString());
   }
 
   /// Process payment.
