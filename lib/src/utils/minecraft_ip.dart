@@ -1,6 +1,6 @@
 /// A parsed Minecraft server IP.
 class MinecraftIp {
-  /// Minecraft server hostname
+  /// Minecraft server hostname.
   final String host;
 
   /// Minecraft server port.
@@ -14,5 +14,5 @@ class MinecraftIp {
   /// Parses from given ip string, e.g. `example.com:25565`.
   MinecraftIp.parse(String ip)
       : host = ip.split(':')[0],
-        port = int.parse(ip.split(':')[1]);
+        port = ip.split(':').length > 1 ? int.parse(ip.split(':')[1]) : 25565;
 }
