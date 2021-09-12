@@ -1,4 +1,5 @@
 import 'package:dart_minecraft/dart_minecraft.dart';
+import 'package:fdl_server/src/builders/server_stats.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -24,18 +25,18 @@ class StatsController extends IController {
     );
     final response = server!.response!;
 
-    return Response.ok({
-      'ip': 'play.fdl-mc.ru',
-      'port': 25565,
-      'description': response.description.description,
-      'version': response.version.name.split(' ').last,
-      'latency': server.ping,
-      'players': {
-        'online': response.players.online,
-        'max': response.players.max,
-        'names': response.players.sample.map((e) => e.name).toList(),
-      }
-    }.toString());
+    return Response.ok(ServerStatsBuilder(
+      ip: 'play.fdl-mc.ru',
+      port: 25565,
+      description: response.description.description,
+      version: response.version.name.split(' ').last,
+      latency: server.ping,
+      players: PlayersStatsBuilder(
+        online: response.players.online,
+        max: response.players.max,
+        names: response.players.sample.map((e) => e.name).toList(),
+      ),
+    ).build());
   }
 
   /// Fetch creative server stats.
@@ -47,17 +48,17 @@ class StatsController extends IController {
     );
     final response = server!.response!;
 
-    return Response.ok({
-      'ip': 'creative.fdl-mc.ru',
-      'port': 25565,
-      'description': response.description.description,
-      'version': response.version.name.split(' ').last,
-      'latency': server.ping,
-      'players': {
-        'online': response.players.online,
-        'max': response.players.max,
-        'names': response.players.sample.map((e) => e.name).toList(),
-      }
-    }.toString());
+    return Response.ok(ServerStatsBuilder(
+      ip: 'creative.fdl-mc.ru',
+      port: 25565,
+      description: response.description.description,
+      version: response.version.name.split(' ').last,
+      latency: server.ping,
+      players: PlayersStatsBuilder(
+        online: response.players.online,
+        max: response.players.max,
+        names: response.players.sample.map((e) => e.name).toList(),
+      ),
+    ).build());
   }
 }
