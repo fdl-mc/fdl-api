@@ -13,6 +13,6 @@ Future<void> initializeServices(Config config) async {
     ),
   );
 
-  database = await Db.create(config.mongodbUrl);
+  database = await Db.create(config.mongodbUrl.toString());
   await database.open();
 }

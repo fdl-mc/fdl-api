@@ -21,7 +21,7 @@ Future<void> main() async {
     '/v1/',
     Router()
       ..mount('/economy/', EconomyController().router)
-      ..mount('/stats/', StatsController().router)
+      ..mount('/stats/', StatsController(config: config).router)
       ..mount('/passport/', PassportController().router),
   );
 
