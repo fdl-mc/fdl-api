@@ -2,6 +2,7 @@
 import 'package:dart_minecraft/src/packet/packets/response_packet.dart';
 import 'package:fdl_server/src/builders/error.dart';
 import 'package:fdl_server/src/builders/server_stats.dart';
+import 'package:fdl_server/src/utils/minecraft_ip.dart';
 
 class Builders {
   static final userNotFoundError = ErrorMessageBuilder(
@@ -38,15 +39,13 @@ class Builders {
 
   static getServerStatsFromResponse(
     ResponsePacket server, {
-    // TODO: replace with Uri
-    required String ip,
-    required int port,
+    required MinecraftIp ip,
   }) {
     final response = server.response!;
 
     return ServerStatsBuilder(
-      ip: ip,
-      port: port,
+      ip: ip.host,
+      port: ip.port,
       description: response.description.description,
       version: response.version.name.split(' ').last,
       latency: server.ping,
