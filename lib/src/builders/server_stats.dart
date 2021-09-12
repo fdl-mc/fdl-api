@@ -8,6 +8,15 @@ class ServerStatsBuilder implements IBuilder<String> {
   int? latency;
   PlayersStatsBuilder? players;
 
+  ServerStatsBuilder({
+    this.ip,
+    this.port,
+    this.description,
+    this.version,
+    this.latency,
+    this.players,
+  });
+
   @override
   String build() {
     return {
