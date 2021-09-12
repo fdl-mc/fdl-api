@@ -1,6 +1,6 @@
 import 'package:fdl_server/src/interfaces/builder.dart';
 
-class ErrorMessageBuilder extends IBuilder<String> {
+class ErrorMessageBuilder implements IBuilder<String> {
   int? errorCode;
   String? errorStatus;
   String? errorMessage;
