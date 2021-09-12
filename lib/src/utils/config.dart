@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fdl_server/src/utils/minecraft_ip.dart';
+
 /// Provides app configuration.
 class Config {
   /// MongoDB URL.
-  final String mongodbUrl;
+  final Uri mongodbUrl;
 
   /// Firebase Admin JSON credentials.
   final Map<String, dynamic> firebaseAdminCredentials;
@@ -13,10 +15,10 @@ class Config {
   final int port;
 
   /// Main MC server ip, e.g. example.com:25565
-  final Uri mainServerIp;
+  final MinecraftIp mainServerIp;
 
   /// Creative MC server ip, e.g. example.com:25565
-  final Uri creativeServerIp;
+  final MinecraftIp creativeServerIp;
 
   Config({
     required this.mongodbUrl,
@@ -33,17 +35,19 @@ class Config {
   /// - `FDL_SERVER_MAIN_IP` for [mainServerIp]
   /// - `FDL_SERVER_CREATIVE_IP` for [creativeServerIp]
   Config.fromEnviroment()
-      : mongodbUrl = Platform.environment['FDL_SERVER_MONGODB_URL']!,
+      : mongodbUrl = Uri.parse(
+          Platform.environment['FDL_SERVER_MONGODB_URL']!,
+        ),
         port = int.tryParse(
           Platform.environment['FDL_SERVER_PORT']!,
         )!,
         firebaseAdminCredentials = jsonDecode(
           Platform.environment['FDL_SERVER_FBA_CREDENTIALS']!,
         ),
-        mainServerIp = Uri.parse(
+        mainServerIp = MinecraftIp.parse(
           Platform.environment['FDL_SERVER_MAIN_IP']!,
         ),
-        creativeServerIp = Uri.parse(
+        creativeServerIp = MinecraftIp.parse(
           Platform.environment['FDL_SERVER_CREATIVE_IP']!,
         );
 }
