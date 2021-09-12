@@ -1,4 +1,5 @@
 import 'package:fdl_server/src/interfaces/middleware.dart';
+import 'package:fdl_server/src/shared/builders.dart';
 import 'package:shelf/shelf.dart';
 
 /// Check for required POST parameters.
@@ -17,10 +18,7 @@ class PostArgsMiddleware extends IMiddleware {
           if (!args.containsKey(requiredArgs[i])) {
             return Response(
               400,
-              body: {
-                'errorCode': 400,
-                'errorMsg': 'Необходим аргумент ${requiredArgs[i]}',
-              }.toString(),
+              body: Builders.getNotEnoughArgsError(requiredArgs[i]).build(),
             );
           }
         }

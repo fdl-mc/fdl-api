@@ -2,6 +2,7 @@ import 'package:fdl_server/src/builders/transaction.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:fdl_server/src/middlewares/auth_check.dart';
 import 'package:fdl_server/src/middlewares/post_args_check.dart';
+import 'package:fdl_server/src/shared/builders.dart';
 import 'package:fdl_server/src/shared/instances.dart';
 import 'package:fdl_server/src/utils/get_auth_details.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -36,10 +37,7 @@ class EconomyController extends IController {
     final data = await economy.findOne(where.eq('_id', id));
 
     if (data == null) {
-      return Response.notFound({
-        'errorCode': 404,
-        'message': 'Пользователь не найден.',
-      }.toString());
+      return Response.notFound(Builders.userNotFoundError.build());
     }
 
     data['id'] = data['_id'];
@@ -68,10 +66,9 @@ class EconomyController extends IController {
       where.eq('nickname', payeeName),
     );
     if (payeePassport == null) {
-      return Response.notFound({
-        'errorCode': 404,
-        'message': 'Пользователь не найден.',
-      }.toString());
+      return Response.notFound(
+        Builders.userNotFoundError.build(),
+      );
     }
     final payeeId = payeePassport['_id'];
 
@@ -81,10 +78,7 @@ class EconomyController extends IController {
 
     // Check for payer funds.
     if (payerEconomy['balance'] < amount) {
-      return Response.forbidden({
-        'errorCode': 403,
-        'message': 'Недостаточно средств.',
-      }.toString());
+      return Response.forbidden(Builders.insufficientFundsError.build());
     }
 
     // Update payee balance.
