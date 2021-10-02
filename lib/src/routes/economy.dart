@@ -16,16 +16,15 @@ class EconomyController extends IController {
     final router = Router();
 
     router
-      // TODO: rework to /<id>/pay (????)
       ..post(
-        '/pay',
+        '/<id>/pay',
         Pipeline()
             .addMiddleware(AuthCheckMiddleware().middleware())
-            .addMiddleware(PostArgsMiddleware(requiredArgs: ['payee', 'amount'])
-                .middleware())
+            .addMiddleware(
+                PostArgsMiddleware(requiredArgs: ['amount']).middleware())
             .addHandler(pay),
       )
-      ..get('/<id>/stats', getUserStats);
+      ..get('/<id>', getUserStats);
 
     return router;
   }
@@ -51,7 +50,7 @@ class EconomyController extends IController {
     final args = request.context['body'] as Map<String, dynamic>;
 
     // Fetch args.
-    final payeeName = args['payee']! as String;
+    final payeeName = request.params['id']!;
     final amount = args['amount'] as int;
     final comment = args['comment'] as String?;
     final payerId = (await getAuthDetails(request))['user_id']! as String;

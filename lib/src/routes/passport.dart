@@ -10,14 +10,14 @@ class PassportController extends IController {
   Router get router {
     final router = Router();
 
-    router.get('/get', getUser);
+    router.get('/<id>', getUser);
     router.get('/find', findUsers);
 
     return router;
   }
 
   Future<Response> getUser(Request request) async {
-    final query = request.url.queryParameters['query']!;
+    final query = request.params['id']!;
     final passports = database.collection('passports');
 
     final user = await passports.findOne(
