@@ -22,7 +22,7 @@ Future<void> main() async {
     Router()
       ..mount('/economy/', EconomyController().router)
       ..mount('/stats/', StatsController(config: config).router)
-      ..mount('/passport/', PassportController().router),
+      ..mount('/passports/', PassportController().router),
   );
 
   final handler = Pipeline()
