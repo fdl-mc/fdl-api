@@ -10,8 +10,8 @@ class PassportController extends IController {
   Router get router {
     final router = Router();
 
-    router.get('/<id>', getUser);
     router.get('/find', findUsers);
+    router.get('/<id>', getUser);
 
     return router;
   }
