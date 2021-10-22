@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fdl_server/src/interfaces/builder.dart';
 
 class ServerStatsBuilder implements IBuilder<String> {
@@ -19,14 +21,14 @@ class ServerStatsBuilder implements IBuilder<String> {
 
   @override
   String build() {
-    return {
+    return jsonEncode({
       'ip': ip!,
       'port': port!,
       'description': description!,
       'version': version!,
       'latency': latency!,
       'players': players!.build(),
-    }.toString();
+    });
   }
 }
 

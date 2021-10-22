@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fdl_server/src/interfaces/builder.dart';
 
 class ErrorMessageBuilder implements IBuilder<String> {
@@ -13,10 +15,10 @@ class ErrorMessageBuilder implements IBuilder<String> {
 
   @override
   String build() {
-    return {
+    return jsonEncode({
       'errorCode': errorCode!,
       'errorStatus': errorStatus!,
       'errorMessage': errorMessage!,
-    }.toString();
+    });
   }
 }

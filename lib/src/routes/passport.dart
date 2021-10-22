@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:fdl_server/src/shared/builders.dart';
 import 'package:fdl_server/src/shared/instances.dart';
@@ -36,7 +38,7 @@ class PassportController extends IController {
     user['id'] = user['_id'];
     user.remove('_id');
 
-    return Response.ok(user.toString());
+    return Response.ok(jsonEncode(user));
   }
 
   Future<Response> findUsers(Request request) async {
@@ -53,6 +55,6 @@ class PassportController extends IController {
       return user;
     }).toList();
 
-    return Response.ok(cleanUsers.toString());
+    return Response.ok(jsonEncode(cleanUsers));
   }
 }

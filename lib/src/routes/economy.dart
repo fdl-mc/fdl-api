@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fdl_server/src/builders/transaction.dart';
 import 'package:fdl_server/src/interfaces/controller.dart';
 import 'package:fdl_server/src/middlewares/auth_check.dart';
@@ -36,13 +38,13 @@ class EconomyController extends IController {
     final data = await economy.findOne(where.eq('_id', id));
 
     if (data == null) {
-      return Response.notFound(Builders.userNotFoundError.build());
+      return Response.notFound(jsonEncode(Builders.userNotFoundError.build()));
     }
 
     data['id'] = data['_id'];
     data.remove('_id');
 
-    return Response.ok(data.toString());
+    return Response.ok(jsonEncode(data));
   }
 
   /// Process payment.
@@ -66,7 +68,7 @@ class EconomyController extends IController {
     );
     if (payeePassport == null) {
       return Response.notFound(
-        Builders.userNotFoundError.build(),
+        jsonEncode(Builders.userNotFoundError.build()),
       );
     }
     final payeeId = payeePassport['_id'];
@@ -77,7 +79,9 @@ class EconomyController extends IController {
 
     // Check for payer funds.
     if (payerEconomy['balance'] < amount) {
-      return Response.forbidden(Builders.insufficientFundsError.build());
+      return Response.forbidden(
+        jsonEncode(Builders.insufficientFundsError.build()),
+      );
     }
 
     // Update payee balance.
@@ -106,6 +110,6 @@ class EconomyController extends IController {
     // i dont know why it puts values :v
     transaction.remove('_id');
 
-    return Response.ok(transaction.toString());
+    return Response.ok(jsonEncode(transaction));
   }
 }
