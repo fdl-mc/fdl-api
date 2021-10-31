@@ -20,14 +20,13 @@ class PassportController extends IController {
 
   Future<Response> getUser(Request request) async {
     final query = request.params['id']!;
-    final passports = database.collection('passports');
 
-    final user = await passports.findOne(
-      where
-          .eq('_id', query)
-          .or(where.eq('discordId', query))
-          .or(where.eq('nickname', query)),
-    );
+    final user = await database.collection('users').findOne(
+          where
+              .eq('_id', query)
+              .or(where.eq('discordId', query))
+              .or(where.eq('nickname', query)),
+        );
 
     if (user == null) {
       return Response.notFound(
@@ -35,26 +34,17 @@ class PassportController extends IController {
       );
     }
 
-    user['id'] = user['_id'];
-    user.remove('_id');
-
     return Response.ok(jsonEncode(user));
   }
 
   Future<Response> findUsers(Request request) async {
     final query = request.url.queryParameters['query']!;
-    final passports = database.collection('passports');
 
-    final users = await passports
+    final users = await database
+        .collection('users')
         .find(where.match('nickname', query, caseInsensitive: true))
         .toList();
 
-    final cleanUsers = users.map((user) {
-      user['id'] = user['_id'];
-      user.remove('_id');
-      return user;
-    }).toList();
-
-    return Response.ok(jsonEncode(cleanUsers));
+    return Response.ok(jsonEncode(users));
   }
 }
