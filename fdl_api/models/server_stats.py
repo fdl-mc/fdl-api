@@ -1,10 +1,11 @@
+from typing import List
 from pydantic import BaseModel
 
 
 class Players(BaseModel):
     online: int
     max: int
-    list: list[str]
+    list: List[str]
 
 
 class ServerStats(BaseModel):
