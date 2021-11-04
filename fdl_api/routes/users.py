@@ -9,6 +9,8 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/find", response_model=List[User])
 async def find_users(discord_id: Optional[str] = None, nickname: Optional[str] = None):
+    users = None
+
     if discord_id:
         users = db.collection("users").where("discord_id", ">=", discord_id).get()
     elif nickname:
