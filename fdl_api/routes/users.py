@@ -12,9 +12,19 @@ async def find_users(discord_id: Optional[str] = None, nickname: Optional[str] =
     users = None
 
     if discord_id:
-        users = db.collection("users").where("discord_id", ">=", discord_id).get()
+        users = (
+            db.collection("users")
+            .order_by("discord_id")
+            .where("discord_id", ">=", discord_id)
+            .get()
+        )
     elif nickname:
-        users = db.collection("users").where("nickname", ">=", nickname).get()
+        users = (
+            db.collection("users")
+            .order_by("nickname")
+            .where("nickname", ">=", nickname)
+            .get()
+        )
 
     if users:
         return [
