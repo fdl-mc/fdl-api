@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 
 class Transaction(BaseModel):
@@ -8,4 +9,5 @@ class Transaction(BaseModel):
     payee: str
     amount: int
     at: datetime
+    comment: Optional[str]
     system: bool
