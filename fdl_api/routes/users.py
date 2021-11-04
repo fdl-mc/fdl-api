@@ -7,12 +7,8 @@ from typing import List, Optional
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get("/find")
-async def find_users(
-    discord_id: Optional[str] = None,
-    nickname: Optional[str] = None,
-    response_model=List[User],
-):
+@router.get("/find", response_model=List[User])
+async def find_users(discord_id: Optional[str] = None, nickname: Optional[str] = None):
     if discord_id:
         users = db.collection("users").where("discord_id", ">=", discord_id).get()
     elif nickname:
@@ -27,8 +23,8 @@ async def find_users(
         return []
 
 
-@router.get("/{id}")
-async def get_user(id: str, response_model=User):
+@router.get("/{id}", response_model=User)
+async def get_user(id: str):
     user: DocumentSnapshot = db.collection("users").document(id).get()
     if not user.to_dict():
         raise HTTPException(404, detail="User not found")

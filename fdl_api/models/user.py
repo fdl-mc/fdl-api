@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -8,4 +8,4 @@ class User(BaseModel):
     discord_id: str
     balance: int
     flags: int
-    created_at: date
+    created_at: datetime
