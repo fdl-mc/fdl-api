@@ -1,0 +1,3 @@
+fastapi
+pydantic
+firebase_admin
