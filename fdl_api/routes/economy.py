@@ -41,6 +41,7 @@ async def pay(data: TransactionData, auth: Dict = Depends(verify_token)):
             "payer": payer_id,
             "payee": data.payee,
             "amount": data.amount,
+            "comment": data.comment,
             "system": False,
         }
     )[1].get()
