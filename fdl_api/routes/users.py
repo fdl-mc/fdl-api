@@ -9,30 +9,22 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/find", response_model=List[User])
 async def find_users(discord_id: Optional[str] = None, nickname: Optional[str] = None):
-    users = None
+    users = []
 
     if discord_id:
-        users = (
-            db.collection("users")
-            .order_by("discord_id")
-            .where("discord_id", ">=", discord_id)
-            .get()
-        )
+        for user in db.collection("users").stream():
+            if user.get("discord_id").lower().startswith(discord_id):
+                users.append(
+                    user.to_dict() | {"id": user.id, "created_at": user.create_time}
+                )
     elif nickname:
-        users = (
-            db.collection("users")
-            .order_by("nickname")
-            .where("nickname", ">=", nickname)
-            .get()
-        )
+        for user in db.collection("users").stream():
+            if user.get("nickname").lower().startswith(nickname.lower()):
+                users.append(
+                    user.to_dict() | {"id": user.id, "created_at": user.create_time}
+                )
 
-    if users:
-        return [
-            user.to_dict() | {"id": user.id, "created_at": user.create_time}
-            for user in users
-        ]
-    else:
-        return []
+    return users
 
 
 @router.get("/{id}", response_model=User)
