@@ -29,7 +29,7 @@ async def find_users(discord_id: Optional[str] = None, nickname: Optional[str] =
 
 @router.get("/{id}", response_model=User)
 async def get_user(id: str):
-    user: DocumentSnapshot = db.collection("users").document(id).get()
+    user = db.collection("users").document(id).get()
     if not user.to_dict():
         raise HTTPException(404, detail="User not found")
     return user.to_dict() | {"id": user.id, "created_at": user.create_time}
