@@ -27,6 +27,9 @@ async def pay(data: TransactionData, auth: Dict = Depends(verify_token)):
     payer = payer_snapshot.to_dict()
     payee = payee_snapshot.to_dict()
 
+    if payer_snapshot.id == payer_snapshot.id:
+        raise HTTPException(400, "Can't pay to yourself")
+
     if not payee:
         raise HTTPException(404, "User not found")
 
