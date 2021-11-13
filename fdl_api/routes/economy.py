@@ -27,7 +27,7 @@ async def pay(data: TransactionData, auth: Dict = Depends(verify_token)):
     payer = payer_snapshot.to_dict()
     payee = payee_snapshot.to_dict()
 
-    if payer_snapshot.id == payer_snapshot.id:
+    if payer_snapshot.id == payee_snapshot.id:
         raise HTTPException(400, "Can't pay to yourself")
 
     if not payee:
